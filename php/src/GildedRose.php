@@ -10,11 +10,25 @@ final class GildedRose
      * @param Item[] $items
      */
     public function __construct(
-        private array $items
+        private array $items,
     ) {
     }
 
+
     public function updateQuality(): void
+    {
+        // ! TODO optimize memory
+        foreach ( $this->items as $item){
+            $adapter = new ItemAdapter($item);
+            $adapter->accept(new AgedBrieVisitor($adapter));
+            $adapter->accept(new BackstageVisitor($adapter));
+            $adapter->accept(new SulfurasVisitor($adapter));
+            $adapter->accept(new UsualVisitor($adapter));
+            $adapter->accept(new ConjuredVisitor($adapter));
+        }
+    }
+
+    public function updateQualitys(): void
     {
         foreach ($this->items as $item) {
             if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
